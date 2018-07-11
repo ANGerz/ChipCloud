@@ -36,11 +36,11 @@ public class DemoActivity
         .uncheckedTextColor(Color.parseColor("#000000"));
 
     ChipCloud drawableChipCloud = new ChipCloud(this, flexboxDrawable, drawableConfig);
-    drawableChipCloud.addChip("Anna A", ContextCompat.getDrawable(this, R.drawable.anna_a), false);
-    drawableChipCloud.addChip("Anna B", ContextCompat.getDrawable(this, R.drawable.anna_b), false);
-    drawableChipCloud.addChip("Anna C", ContextCompat.getDrawable(this, R.drawable.anna_c), false);
-    drawableChipCloud.addChip("Anna D", ContextCompat.getDrawable(this, R.drawable.anna_d), false);
-    drawableChipCloud.addChip("Anna E", ContextCompat.getDrawable(this, R.drawable.anna_e), false);
+    drawableChipCloud.addChip("Anna A", ContextCompat.getDrawable(this, R.drawable.anna_a));
+    drawableChipCloud.addChip("Anna B", ContextCompat.getDrawable(this, R.drawable.anna_b));
+    drawableChipCloud.addChip("Anna C", ContextCompat.getDrawable(this, R.drawable.anna_c));
+    drawableChipCloud.addChip("Anna D", ContextCompat.getDrawable(this, R.drawable.anna_d));
+    drawableChipCloud.addChip("Anna E", ContextCompat.getDrawable(this, R.drawable.anna_e));
 
 
     FlexboxLayout flexboxDrawableWithClose = (FlexboxLayout) findViewById(R.id.flexbox_drawable_close);
@@ -54,11 +54,11 @@ public class DemoActivity
         .showClose(Color.parseColor("#a6a6a6"), 500);
 
     ChipCloud drawableWithCloseChipCloud = new ChipCloud(this, flexboxDrawableWithClose, drawableWithCloseConfig);
-    drawableWithCloseChipCloud.addChip("Anna A", ContextCompat.getDrawable(this, R.drawable.anna_a), false);
-    drawableWithCloseChipCloud.addChip("Anna B", ContextCompat.getDrawable(this, R.drawable.anna_b), false);
-    drawableWithCloseChipCloud.addChip("Anna C", ContextCompat.getDrawable(this, R.drawable.anna_c), false);
-    drawableWithCloseChipCloud.addChip("Anna D", ContextCompat.getDrawable(this, R.drawable.anna_d), false);
-    drawableWithCloseChipCloud.addChip("Anna E", ContextCompat.getDrawable(this, R.drawable.anna_e), false);
+    drawableWithCloseChipCloud.addChip("Anna A", ContextCompat.getDrawable(this, R.drawable.anna_a));
+    drawableWithCloseChipCloud.addChip("Anna B", ContextCompat.getDrawable(this, R.drawable.anna_b));
+    drawableWithCloseChipCloud.addChip("Anna C", ContextCompat.getDrawable(this, R.drawable.anna_c));
+    drawableWithCloseChipCloud.addChip("Anna D", ContextCompat.getDrawable(this, R.drawable.anna_d));
+    drawableWithCloseChipCloud.addChip("Anna E", ContextCompat.getDrawable(this, R.drawable.anna_e));
 
     FlexboxLayout flexbox = (FlexboxLayout) findViewById(R.id.flexbox);
 

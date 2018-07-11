@@ -83,19 +83,11 @@ public class ChipCloud
     this.ignoreAutoChecks = ignoreAutoChecks;
   }
 
-  public <T> void addChips(T[] objects)
-  {
-    for (T object : objects)
-    {
-      addChip(object);
-    }
-  }
-
   public <T> void addChips(List<T> objects)
   {
     for (T object : objects)
     {
-      addChip(object);
+      addChip(object, null, false);
     }
   }
 
@@ -104,6 +96,14 @@ public class ChipCloud
     for (T object : objects)
     {
       addChip(object, drawable, overrideHeight);
+    }
+  }
+
+  public <T> void addChips(T[] objects)
+  {
+    for (T object : objects)
+    {
+      addChip(object, null, false);
     }
   }
 
@@ -123,6 +123,11 @@ public class ChipCloud
   public <T> void addChip(T object, Drawable drawable, boolean overrideHeight)
   {
     addChip(object, drawable, true, overrideHeight);
+  }
+
+  public <T> void addChip(T object, Drawable drawable)
+  {
+    addChip(object, drawable, true, false);
   }
 
   // Custom layout do not work with insetPadding
