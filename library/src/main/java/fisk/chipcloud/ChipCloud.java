@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,34 +99,34 @@ public class ChipCloud
     }
   }
 
-  public <T> void addChips(T[] objects, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  public <T> void addChips(T[] objects, Drawable drawable, boolean overrideHeight)
   {
     for (T object : objects)
     {
-      addChip(object, drawable, customLayout, overrideHeight);
+      addChip(object, drawable, overrideHeight);
     }
   }
 
-  public <T> void addChips(List<T> objects, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  public <T> void addChips(List<T> objects, Drawable drawable, boolean overrideHeight)
   {
     for (T object : objects)
     {
-      addChip(object, drawable, customLayout, overrideHeight);
+      addChip(object, drawable, overrideHeight);
     }
   }
 
   public <T> void addChipNoResize(T object, Drawable drawable)
   {
-    addChip(object, drawable, false, R.layout.inset_toggle_chip, false);
+    addChip(object, drawable, false, false);
   }
 
-  public <T> void addChip(T object, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  public <T> void addChip(T object, Drawable drawable, boolean overrideHeight)
   {
-    addChip(object, drawable, true, customLayout, overrideHeight);
+    addChip(object, drawable, true, overrideHeight);
   }
 
   // Custom layout do not work with insetPadding
-  public <T> void addChip(T object, Drawable drawable, boolean resizeDrawable, @LayoutRes int customLayout,
+  public <T> void addChip(T object, Drawable drawable, boolean resizeDrawable,
       boolean overrideHeight)
   {
     ToggleChip toggleChip;
@@ -143,7 +142,7 @@ public class ChipCloud
     }
     else
     {
-      toggleChip = (ToggleChip) LayoutInflater.from(context).inflate(customLayout != -1 ? customLayout : R.layout.toggle_chip, layout, false);
+      toggleChip = (ToggleChip) LayoutInflater.from(context).inflate(config.customLayout != -1 ? config.customLayout : R.layout.toggle_chip, layout, false);
       if (overrideHeight == false)
       {
         chipHeight = context.getResources().getDimensionPixelSize(R.dimen.chip_height);
@@ -181,7 +180,7 @@ public class ChipCloud
 
   public <T> void addChip(T object)
   {
-    addChip(object, null, -1, false);
+    addChip(object, null, false);
   }
 
   public void setChecked(int index)

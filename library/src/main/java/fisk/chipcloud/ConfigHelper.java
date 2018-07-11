@@ -43,7 +43,7 @@ class ConfigHelper
     {
       if (toggleChip.isChecked())
       {
-        if (config.customLayout != -1)
+        if (config.customLayout == -1)
         {
           toggleChip.getBackground().setColorFilter(config.checkedChipColor, PorterDuff.Mode.SRC);
         }
@@ -51,7 +51,7 @@ class ConfigHelper
       }
       else
       {
-        if (config.customLayout != -1)
+        if (config.customLayout == -1)
         {
           toggleChip.getBackground().setColorFilter(config.uncheckedChipColor, PorterDuff.Mode.SRC);
         }
