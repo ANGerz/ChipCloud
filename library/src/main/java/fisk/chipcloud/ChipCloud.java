@@ -1,26 +1,31 @@
 package fisk.chipcloud;
 
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-import java.util.List;
-
 import eu.fiskur.chipcloud.R;
 
-@SuppressWarnings({"unused", "SameParameterValue"})
-public class ChipCloud implements View.OnClickListener{
+@SuppressWarnings({ "unused", "SameParameterValue" })
+public class ChipCloud
+    implements View.OnClickListener
+{
 
   private static final boolean USER_CLICK = true;
+
   private static final boolean AUTO_CHECK = false;
 
-  public enum SelectMode{
+  public enum SelectMode
+  {
     multi,
     single,
     mandatory,
@@ -29,111 +34,168 @@ public class ChipCloud implements View.OnClickListener{
   }
 
   private final Context context;
+
   private final ViewGroup layout;
+
   private final SelectMode selectMode;
+
   private Typeface typeface = null;
+
   private StateListDrawable customDrawable = null;
 
   private ChipCloudConfig config = null;
 
   private ChipListener chipListener;
+
   private ChipDeletedListener deletedListener;
+
   private boolean ignoreAutoChecks = false;
 
   private Drawable closeX = null;
 
-  public ChipCloud(Context context, ViewGroup layout){
+  public ChipCloud(Context context, ViewGroup layout)
+  {
     this.context = context;
     this.layout = layout;
     selectMode = SelectMode.multi;
   }
 
-  public ChipCloud(Context context, ViewGroup layout, ChipCloudConfig config) {
+  public ChipCloud(Context context, ViewGroup layout, ChipCloudConfig config)
+  {
     this.context = context;
     this.layout = layout;
     selectMode = config.selectMode;
     this.config = config;
   }
 
-  public void setListener(ChipListener chipListener){
+  public void setListener(ChipListener chipListener)
+  {
     this.chipListener = chipListener;
   }
 
-  public void setDeleteListener(ChipDeletedListener deletedListener){
+  public void setDeleteListener(ChipDeletedListener deletedListener)
+  {
     this.deletedListener = deletedListener;
   }
 
-  public void setListener(ChipListener chipListener, boolean ignoreAutoChecks){
+  public void setListener(ChipListener chipListener, boolean ignoreAutoChecks)
+  {
     this.chipListener = chipListener;
     this.ignoreAutoChecks = ignoreAutoChecks;
   }
 
-  public <T> void addChips(T[] objects){
-    for(T object : objects){
+  public <T> void addChips(T[] objects)
+  {
+    for (T object : objects)
+    {
       addChip(object);
     }
   }
 
-  public <T> void addChips(List<T> objects){
-    for(T object : objects){
+  public <T> void addChips(List<T> objects)
+  {
+    for (T object : objects)
+    {
       addChip(object);
     }
   }
 
-  public <T> void addChipNoResize(T object, Drawable drawable){
-    addChip(object, drawable, false);
+  public <T> void addChips(T[] objects, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  {
+    for (T object : objects)
+    {
+      addChip(object, drawable, customLayout, overrideHeight);
+    }
   }
 
-  public <T> void addChip(T object, Drawable drawable){
-    addChip(object, drawable, true);
+  public <T> void addChips(List<T> objects, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  {
+    for (T object : objects)
+    {
+      addChip(object, drawable, customLayout, overrideHeight);
+    }
   }
 
-  public <T> void addChip(T object, Drawable drawable, boolean resizeDrawable){
+  public <T> void addChipNoResize(T object, Drawable drawable)
+  {
+    addChip(object, drawable, false, R.layout.inset_toggle_chip, false);
+  }
+
+  public <T> void addChip(T object, Drawable drawable, @LayoutRes int customLayout, boolean overrideHeight)
+  {
+    addChip(object, drawable, true, customLayout, overrideHeight);
+  }
+
+  // Custom layout do not work with insetPadding
+  public <T> void addChip(T object, Drawable drawable, boolean resizeDrawable, @LayoutRes int customLayout,
+      boolean overrideHeight)
+  {
     ToggleChip toggleChip;
     int chipHeight;
-    if(config.useInsetPadding){
+    if (config.useInsetPadding)
+    {
       toggleChip = (ToggleChip) LayoutInflater.from(context).inflate(R.layout.inset_toggle_chip, layout, false);
-      chipHeight = context.getResources().getDimensionPixelSize(R.dimen.inset_chip_height);
-    }else{
-      toggleChip = (ToggleChip) LayoutInflater.from(context).inflate(R.layout.toggle_chip, layout, false);
-      chipHeight = context.getResources().getDimensionPixelSize(R.dimen.chip_height);
+      if (overrideHeight == false)
+      {
+        chipHeight = context.getResources().getDimensionPixelSize(R.dimen.inset_chip_height);
+        toggleChip.setHeight(chipHeight);
+      }
+    }
+    else
+    {
+      toggleChip = (ToggleChip) LayoutInflater.from(context).inflate(customLayout != -1 ? customLayout : R.layout.toggle_chip, layout, false);
+      if (overrideHeight == false)
+      {
+        chipHeight = context.getResources().getDimensionPixelSize(R.dimen.chip_height);
+        toggleChip.setHeight(chipHeight);
+      }
     }
     toggleChip.setLabel(object.toString());
     ConfigHelper.initialise(toggleChip, config);
 
-    if(drawable != null){
-      if(resizeDrawable) {
+    if (drawable != null)
+    {
+      if (resizeDrawable)
+      {
         toggleChip.setDrawable(context, drawable);
-      }else{
+      }
+      else
+      {
         toggleChip.setDrawableNoResize(context, drawable);
       }
     }
 
-    if(config.selectMode == SelectMode.close){
-      if(closeX == null){
+    if (config.selectMode == SelectMode.close)
+    {
+      if (closeX == null)
+      {
         closeX = ConfigHelper.closeDrawable(context, config.closeTint);
       }
       toggleChip.showClose(closeX);
     }
-    toggleChip.setHeight(chipHeight);
     toggleChip.setOnClickListener(this);
 
 
     layout.addView(toggleChip);
   }
 
-  public <T> void addChip(T object){
-    addChip(object, null);
+  public <T> void addChip(T object)
+  {
+    addChip(object, null, -1, false);
   }
 
-  public void setChecked(int index){
+  public void setChecked(int index)
+  {
     ToggleChip toggleChip = (ToggleChip) layout.getChildAt(index);
     check(toggleChip, true, AUTO_CHECK);
-    if(selectMode == SelectMode.single || selectMode == SelectMode.mandatory){
+    if (selectMode == SelectMode.single || selectMode == SelectMode.mandatory)
+    {
       int childCount = layout.getChildCount();
-      for (int i = 0; i < childCount; i++) {
+      for (int i = 0; i < childCount; i++)
+      {
         View child = layout.getChildAt(i);
-        if (child != toggleChip) {
+        if (child != toggleChip)
+        {
           ToggleChip otherChip = (ToggleChip) child;
           check(otherChip, false, AUTO_CHECK);
         }
@@ -141,20 +203,25 @@ public class ChipCloud implements View.OnClickListener{
     }
   }
 
-  public void setSelectedIndexes(int[] indexes){
-    if(selectMode == SelectMode.single || selectMode == SelectMode.mandatory){
+  public void setSelectedIndexes(int[] indexes)
+  {
+    if (selectMode == SelectMode.single || selectMode == SelectMode.mandatory)
+    {
       return;
     }
 
-    for (int index : indexes) {
+    for (int index : indexes)
+    {
       ToggleChip chip = (ToggleChip) layout.getChildAt(index);
       check(chip, true, AUTO_CHECK);
     }
   }
 
-  public void deselectIndex(int index){
+  public void deselectIndex(int index)
+  {
     ToggleChip toggleChip = (ToggleChip) layout.getChildAt(index);
-    switch(selectMode){
+    switch (selectMode)
+    {
       case multi:
       case single:
         check(toggleChip, false, AUTO_CHECK);
@@ -164,24 +231,30 @@ public class ChipCloud implements View.OnClickListener{
     }
   }
 
-  public String getLabel(int index){
+  public String getLabel(int index)
+  {
     return ((ToggleChip) layout.getChildAt(index)).getText().toString();
   }
 
   @Override
-  public void onClick(View view) {
+  public void onClick(View view)
+  {
     ToggleChip clickedChip = (ToggleChip) view;
-    switch (selectMode) {
+    switch (selectMode)
+    {
       case multi:
         check(clickedChip, !clickedChip.isChecked(), USER_CLICK);
         break;
       case single:
         check(clickedChip, !clickedChip.isChecked(), USER_CLICK);
-        if(clickedChip.isChecked()) {
+        if (clickedChip.isChecked())
+        {
           int childCount = layout.getChildCount();
-          for (int i = 0; i < childCount; i++) {
+          for (int i = 0; i < childCount; i++)
+          {
             View child = layout.getChildAt(i);
-            if (child != clickedChip) {
+            if (child != clickedChip)
+            {
               ToggleChip otherChip = (ToggleChip) child;
               check(otherChip, false, AUTO_CHECK);
             }
@@ -189,12 +262,15 @@ public class ChipCloud implements View.OnClickListener{
         }
         break;
       case mandatory:
-        if(!clickedChip.isChecked()){
+        if (!clickedChip.isChecked())
+        {
           check(clickedChip, true, USER_CLICK);
           int childCount = layout.getChildCount();
-          for (int i = 0; i < childCount; i++) {
+          for (int i = 0; i < childCount; i++)
+          {
             View child = layout.getChildAt(i);
-            if (child != clickedChip) {
+            if (child != clickedChip)
+            {
               ToggleChip otherChip = (ToggleChip) child;
               check(otherChip, false, AUTO_CHECK);
             }
@@ -204,31 +280,40 @@ public class ChipCloud implements View.OnClickListener{
       case close:
         final int index = layout.indexOfChild(view);
         final ToggleChip deletedChip = (ToggleChip) view;
-        if(config.closeAnimationPeriod != -1){
+        if (config.closeAnimationPeriod != -1)
+        {
           AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
           anim.setDuration(config.closeAnimationPeriod);
-          anim.setAnimationListener(new Animation.AnimationListener() {
+          anim.setAnimationListener(new Animation.AnimationListener()
+          {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animation animation)
+            {
 
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
-              if(deletedListener != null){
+            public void onAnimationEnd(Animation animation)
+            {
+              if (deletedListener != null)
+              {
                 deletedListener.chipDeleted(index, deletedChip.getText().toString());
               }
               layout.removeView(deletedChip);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationRepeat(Animation animation)
+            {
 
             }
           });
           view.startAnimation(anim);
-        }else{
-          if(deletedListener != null){
+        }
+        else
+        {
+          if (deletedListener != null)
+          {
             deletedListener.chipDeleted(index, deletedChip.getText().toString());
           }
           layout.removeView(deletedChip);
@@ -241,12 +326,15 @@ public class ChipCloud implements View.OnClickListener{
     }
   }
 
-  private void check(ToggleChip toggleChip, boolean checked, boolean isUserClick){
+  private void check(ToggleChip toggleChip, boolean checked, boolean isUserClick)
+  {
     toggleChip.setChecked(checked);
     ConfigHelper.update(toggleChip, config);
 
-    if(chipListener != null){
-      if(!isUserClick && ignoreAutoChecks){
+    if (chipListener != null)
+    {
+      if (!isUserClick && ignoreAutoChecks)
+      {
         return;
       }
       int index = layout.indexOfChild(toggleChip);

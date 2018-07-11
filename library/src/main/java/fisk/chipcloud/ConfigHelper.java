@@ -8,9 +8,11 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 
 import eu.fiskur.chipcloud.R;
 
-class ConfigHelper {
+class ConfigHelper
+{
 
-  static Drawable closeDrawable(Context context, int xColour){
+  static Drawable closeDrawable(Context context, int xColour)
+  {
     Drawable closeX = ContextCompat.getDrawable(context, R.drawable.cross);
     Drawable wrappedX = closeX.mutate();
     wrappedX = DrawableCompat.wrap(wrappedX);
@@ -19,24 +21,41 @@ class ConfigHelper {
     return wrappedX;
   }
 
-  static void initialise(ToggleChip toggleChip, ChipCloudConfig config){
-    if(config != null){
+  static void initialise(ToggleChip toggleChip, ChipCloudConfig config)
+  {
+    if (config != null)
+    {
+      if (config.customLayout != -1)
+      {
         toggleChip.getBackground().setColorFilter(config.uncheckedChipColor, PorterDuff.Mode.SRC);
-        toggleChip.setTextColor(config.uncheckedTextColor);
-      if(config.typeface != null){
+      }
+      toggleChip.setTextColor(config.uncheckedTextColor);
+      if (config.typeface != null)
+      {
         toggleChip.setTypeface(config.typeface);
       }
     }
   }
 
-  static void update(ToggleChip toggleChip, ChipCloudConfig config){
-    if(config != null) {
-      if (toggleChip.isChecked()) {
+  static void update(ToggleChip toggleChip, ChipCloudConfig config)
+  {
+    if (config != null)
+    {
+      if (toggleChip.isChecked())
+      {
+        if (config.customLayout != -1)
+        {
           toggleChip.getBackground().setColorFilter(config.checkedChipColor, PorterDuff.Mode.SRC);
-          toggleChip.setTextColor(config.checkedTextColor);
-      } else {
+        }
+        toggleChip.setTextColor(config.checkedTextColor);
+      }
+      else
+      {
+        if (config.customLayout != -1)
+        {
           toggleChip.getBackground().setColorFilter(config.uncheckedChipColor, PorterDuff.Mode.SRC);
-          toggleChip.setTextColor(config.uncheckedTextColor);
+        }
+        toggleChip.setTextColor(config.uncheckedTextColor);
       }
     }
   }
