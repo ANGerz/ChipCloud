@@ -19,6 +19,13 @@ public class ToggleChip
     extends CheckedTextView
 {
 
+  private Chippable label;
+
+  public Chippable getLabel()
+  {
+    return label;
+  }
+
   public ToggleChip(Context context, AttributeSet attrs, int defStyleAttr)
   {
     super(context, attrs, defStyleAttr);
@@ -107,8 +114,9 @@ public class ToggleChip
     return scaled;
   }
 
-  public void setLabel(String label)
+  public void setLabel(Chippable label)
   {
-    setText(label);
+    this.label = label;
+    setText(label.getString(getContext()));
   }
 }

@@ -83,55 +83,55 @@ public class ChipCloud
     this.ignoreAutoChecks = ignoreAutoChecks;
   }
 
-  public <T> void addChips(List<T> objects)
+  public void addChips(List<Chippable> objects)
   {
-    for (T object : objects)
+    for (Chippable object : objects)
     {
       addChip(object, null, false);
     }
   }
 
-  public <T> void addChips(T[] objects, Drawable drawable, boolean overrideHeight)
+  public void addChips(Chippable[] objects, Drawable drawable, boolean overrideHeight)
   {
-    for (T object : objects)
+    for (Chippable object : objects)
     {
       addChip(object, drawable, overrideHeight);
     }
   }
 
-  public <T> void addChips(T[] objects)
+  public void addChips(Chippable[] objects)
   {
-    for (T object : objects)
+    for (Chippable object : objects)
     {
       addChip(object, null, false);
     }
   }
 
-  public <T> void addChips(List<T> objects, Drawable drawable, boolean overrideHeight)
+  public void addChips(List<Chippable> objects, Drawable drawable, boolean overrideHeight)
   {
-    for (T object : objects)
+    for (Chippable object : objects)
     {
       addChip(object, drawable, overrideHeight);
     }
   }
 
-  public <T> void addChipNoResize(T object, Drawable drawable)
+  public void addChipNoResize(Chippable object, Drawable drawable)
   {
     addChip(object, drawable, false, false);
   }
 
-  public <T> void addChip(T object, Drawable drawable, boolean overrideHeight)
+  public void addChip(Chippable object, Drawable drawable, boolean overrideHeight)
   {
     addChip(object, drawable, true, overrideHeight);
   }
 
-  public <T> void addChip(T object, Drawable drawable)
+  public void addChip(Chippable object, Drawable drawable)
   {
     addChip(object, drawable, true, false);
   }
 
   // Custom layout do not work with insetPadding
-  public <T> void addChip(T object, Drawable drawable, boolean resizeDrawable,
+  public <T> void addChip(Chippable object, Drawable drawable, boolean resizeDrawable,
       boolean overrideHeight)
   {
     ToggleChip toggleChip;
@@ -154,7 +154,8 @@ public class ChipCloud
         toggleChip.setHeight(chipHeight);
       }
     }
-    toggleChip.setLabel(object.toString());
+    toggleChip.setLabel(object);
+
     ConfigHelper.initialise(toggleChip, config);
 
     if (drawable != null)
@@ -183,7 +184,7 @@ public class ChipCloud
     layout.addView(toggleChip);
   }
 
-  public <T> void addChip(T object)
+  public void addChip(Chippable object)
   {
     addChip(object, null, false);
   }
@@ -342,7 +343,7 @@ public class ChipCloud
         return;
       }
       int index = layout.indexOfChild(toggleChip);
-      chipListener.chipCheckedChange(index, checked, isUserClick);
+      chipListener.chipCheckedChange(index, checked, isUserClick, toggleChip.getLabel());
     }
   }
 }
