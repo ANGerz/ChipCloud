@@ -331,6 +331,11 @@ public class ChipCloud
     }
   }
 
+  public ViewGroup getLayout()
+  {
+    return layout;
+  }
+
   private void check(ToggleChip toggleChip, boolean checked, boolean isUserClick)
   {
     toggleChip.setChecked(checked);
